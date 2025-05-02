@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crown Realms - Online Menu</title>
+  <link rel="stylesheet" href="lobby.css">
+</head>
+<body>
+  <div class="lobby-container">
+    <header class="lobby-header">
+      <h1>Crown Realms</h1>
+      <p>Welcome to the Kingdoms of Crown Realms!</p>
+    </header>
+    
+    <main class="lobby-main">
+      <!-- Realms List -->
+      <section class="realms">
+        <h2>Available Realms</h2>
+        <ul id="realmsList">
+          <li>Realm 1 - 200 Players Online</li>
+          <li>Realm 2 - 150 Players Online</li>
+          <li>Realm 3 - 300 Players Online</li>
+        </ul>
+        <button onclick="joinRealm()">Join Selected Realm</button>
+      </section>
+
+      <!-- Online Players -->
+      <section class="online-players">
+        <h2>Players Online</h2>
+        <ul id="playerList">
+          <li>Player1</li>
+          <li>Player2</li>
+          <li>Player3</li>
+        </ul>
+      </section>
+
+      <!-- Chat Box -->
+      <section class="chat">
+        <h2>Global Chat</h2>
+        <div id="chatBox">
+          <p><strong>Player1:</strong> Hello from Realm 1!</p>
+          <p><strong>Player2:</strong> Ready for battle!</p>
+        </div>
+        <input type="text" id="chatInput" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+      </section>
+    </main>
+  </div>
+  <script src="lobby.js"></script>
+</body>
+</html>

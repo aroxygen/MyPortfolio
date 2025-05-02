@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crown Realms</title>
+</head>
+<body>
+  <main>
     <div id="market" class="section">
       <h2>Pazar</h2>
       <p>Hammaddeleri diğer oyuncularla takas edebileceğiniz alan.</p>
@@ -57,7 +66,7 @@
         <input type="number" id="sendAxe" value="0" min="0" style="width: 60px;" />
         <button onclick="sendAttack()" style="margin-left: 10px; padding: 5px 10px;">🚀 Saldır</button>
       </div>
-      <p id="attackStatus" style="margin-top: 10px; font-weight: bold;" style="margin-top: 10px; font-weight: bold;"></p>
+      <p id="attackStatus" style="margin-top: 10px; font-weight: bold;"></p>
     </div>
 
     <div id="academy" class="section">
@@ -74,7 +83,8 @@
       <button onclick="usePremium()">⚡ Hızlı İnşaat (10 PP)</button>
       <p id="premiumStatus"></p>
     </div>
-      <div id="multivillage" class="section">
+
+    <div id="multivillage" class="section">
       <h2>Çoklu Köy Yönetimi</h2>
       <p>Buradan farklı köylerinizi seçip yönetebilirsiniz.</p>
       <select onchange="switchVillage(this.value)">
@@ -112,7 +122,8 @@
         <li>[01.05.2025] Casus gönderildi, köy boş bulundu.</li>
       </ul>
     </div>
-      <div id="saveLoad" class="section">
+
+    <div id="saveLoad" class="section">
       <h2>Oyun Kaydet / Yükle</h2>
       <button onclick="saveGame()">Kaydet</button>
       <button onclick="loadGame()">Yükle</button>
@@ -130,213 +141,12 @@
       <p>MetaMask ile cüzdanınızı bağlayarak Web3 özelliklerini kullanabilirsiniz.</p>
       <button onclick="connectWallet()">🔐 MetaMask ile Bağlan</button>
       <p id="walletInfo">Cüzdan bağlanmadı.</p>
-        <div id="landNFT" class="section">
-      <h2>Arazi NFT Pazarı</h2>
-      <p>Haritadaki her kare bir NFT'ye karşılık gelir. Cüzdanınıza bağlı olarak bu arazileri alabilir, satabilir veya kiralayabilirsiniz.</p>
-      <p>🎯 Koordinat: <strong>(479|488)</strong></p>
-      <button onclick="mintLandNFT()">Mint Et (0.01 ETH)</button>
-      <button onclick="listLandForSale()">Satışa Çıkar</button>
-      <button onclick="rentLand()">Kiralık Gönder</button>
-      <p id="nftStatus">MetaMask ile bağlantı gereklidir.</p>
     </div>
   </main>
 
   <script>
-    let pp = 100;
-    let swordResearched = false;
-    let nobles = 0;
-
-    function createTrade() {
-      const give = document.getElementById('giveResource').value;
-      const take = document.getElementById('takeResource').value;
-      const giveAmt = parseInt(document.getElementById('giveAmount').value);
-      const takeAmt = parseInt(document.getElementById('takeAmount').value);
-
-      if (window[give] >= giveAmt && give !== take) {
-        window[give] -= giveAmt;
-        window[take] += takeAmt;
-        document.getElementById('marketStatus').innerText = `Takas başarılı: ${giveAmt} ${give} → ${takeAmt} ${take}`;
-        updateUI();
-      } else {
-        document.getElementById('marketStatus').innerText = 'Takas başarısız. Yetersiz kaynak veya geçersiz işlem.';
-      }
-    }
-
-    function researchUnit(type) {
-      if (type === 'sword' && wood >= 100 && iron >= 100 && !swordResearched) {
-        wood -= 100;
-        iron -= 100;
-        swordResearched = true;
-        document.getElementById('smithStatus').innerText = 'Kılıç ustası başarıyla araştırıldı!';
-        updateUI();
-      } else {
-        document.getElementById('smithStatus').innerText = 'Araştırma başarısız veya zaten araştırıldı.';
-      }
-    }
-
-    function trainNoble() {
-      if (wood >= 500 && iron >= 500) {
-        wood -= 500;
-        iron -= 500;
-        nobles++;
-        document.getElementById('academyStatus').innerText = `1 Soylu eğitildi. Toplam soylu: ${nobles}`;
-        updateUI();
-      } else {
-        document.getElementById('academyStatus').innerText = 'Yetersiz kaynak!';
-      }
-    }
-
-    function usePremium() {
-      if (pp >= 10) {
-        pp -= 10;
-        wood += 200;
-        clay += 200;
-        iron += 200;
-        document.getElementById('premiumStatus').innerText = 'Hızlı inşaat aktif! Kaynaklar arttırıldı.';
-        updateUI();
-      } else {
-        document.getElementById('premiumStatus').innerText = 'Yetersiz Premium Puanı!';
-      }
-    }
-      function switchVillage(id) {
-      document.getElementById('villageInfo').innerText = `Köy ${id} yönetimi aktif.`;
-    }
-
-    function postToForum() {
-      const msg = document.getElementById('forumPost').value;
-      if (msg.trim()) {
-        const div = document.getElementById('forumMessages');
-        const p = document.createElement('p');
-        p.textContent = `📣 ${msg}`;
-        div.prepend(p);
-        document.getElementById('forumPost').value = '';
-      }
-    } 
-      function saveGame() {
-      const state = {
-        wood, clay, iron, pop, pp, nobles
-      };
-      localStorage.setItem('crownRealmsSave', JSON.stringify(state));
-      document.getElementById('saveStatus').innerText = 'Oyun başarıyla kaydedildi!';
-    }
-
-    function loadGame() {
-      const data = localStorage.getItem('crownRealmsSave');
-      if (data) {
-        const state = JSON.parse(data);
-        wood = state.wood;
-        clay = state.clay;
-        iron = state.iron;
-        pop = state.pop;
-        pp = state.pp;
-        nobles = state.nobles;
-        updateUI();
-        document.getElementById('saveStatus').innerText = 'Kayıt yüklendi!';
-      } else {
-        document.getElementById('saveStatus').innerText = 'Kayıt bulunamadı!';
-      }
-    }
-
-    function pushNotice(text) {
-      const div = document.createElement('div');
-      div.textContent = '🔔 ' + text;
-      div.style.padding = '10px';
-      div.style.margin = '5px';
-      div.style.backgroundColor = '#333';
-      div.style.borderLeft = '5px solid gold';
-      document.getElementById('notices').prepend(div);
-    }
-
-    async function connectWallet() {
-      if (typeof window.ethereum !== 'undefined') {
-        try {
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          const wallet = accounts[0];
-          document.getElementById('walletInfo').innerText = 'Bağlı cüzdan: ' + wallet;
-        } catch (err) {
-          document.getElementById('walletInfo').innerText = 'Bağlantı reddedildi.';
-        }
-      } else {
-        document.getElementById('walletInfo').innerText = 'MetaMask yüklü değil!';
-      }
-    }
-      async function mintLandNFT() {
-      if (typeof window.ethereum === 'undefined') {
-        document.getElementById('nftStatus').innerText = 'MetaMask gerekli.';
-        return;
-      }
-      const provider = window.ethereum;
-      const signer = (await provider.request({ method: 'eth_requestAccounts' }))[0];
-      try {
-        await provider.request({
-          method: 'eth_sendTransaction',
-          params: [{
-            from: signer,
-            to: '0xLANDNFTCONTRACTADDRESS',
-            value: '0x2386F26FC10000'
-          }]
-        });
-        document.getElementById('nftStatus').innerText = 'Arazi NFT\'si mint edildi!';
-      } catch (err) {
-        document.getElementById('nftStatus').innerText = 'İşlem iptal edildi veya başarısız.';
-      }
-    }
-
-    function listLandForSale() {
-      document.getElementById('nftStatus').innerText = 'Arazi satışa çıkarıldı. (Sanal simülasyon)';
-    }
-
-    function rentLand() {
-      document.getElementById('nftStatus').innerText = 'Arazi kiralandı. (Sanal simülasyon)';
-    }
-      function trainUnit() {
-      const type = document.getElementById('unitType').value;
-      const amount = parseInt(document.getElementById('unitAmount').value);
-      const cost = {
-        spear: { wood: 50, clay: 30, iron: 10 },
-        sword: { wood: 30, clay: 30, iron: 40 },
-        axe: { wood: 60, clay: 30, iron: 40 }
-      };
-      const total = {
-        wood: cost[type].wood * amount,
-        clay: cost[type].clay * amount,
-        iron: cost[type].iron * amount
-      };
-      if (wood >= total.wood && clay >= total.clay && iron >= total.iron) {
-        wood -= total.wood;
-        clay -= total.clay;
-        iron -= total.iron;
-        document.getElementById('trainStatus').innerText = `${amount} ${type} üretildi.`;
-        updateUI();
-      } else {
-        document.getElementById('trainStatus').innerText = 'Yetersiz kaynak!';
-      }
-    }
-  function sendAttack() {
-  const coords = document.getElementById('targetCoords').value;
-  const spear = parseInt(document.getElementById('sendSpear').value);
-  const sword = parseInt(document.getElementById('sendSword').value);
-  const axe = parseInt(document.getElementById('sendAxe').value);
-  const totalUnits = spear + sword + axe;
-
-  if (!coords.match(/^[0-9]{3}\|[0-9]{3}$/)) {
-    document.getElementById('attackStatus').innerText = 'Geçersiz koordinat!';
-    return;
-  }
-  if (totalUnits <= 0) {
-    document.getElementById('attackStatus').innerText = 'Birim seçilmedi!';
-    return;
-  }
-
-  const result = Math.random() < 0.6 ? 'başarılı' : 'başarısız';
-  const loot = result === 'başarılı' ? Math.floor(Math.random() * 150) + 50 : 0;
-  const report = `[${new Date().toLocaleString()}] ${coords} köyüne saldırı ${result}. Ganimet: ${loot} odun.`;
-  const li = document.createElement('li');
-  li.innerText = report;
-  document.getElementById('reportList').prepend(li);
-  document.getElementById('attackStatus').innerText = 'Sefer gönderildi!';
-}
-</script>
-
+    // JavaScript functions provided above
+    // Paste them here after this structure
+  </script>
 </body>
 </html>

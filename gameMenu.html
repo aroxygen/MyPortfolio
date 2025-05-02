@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Menu</title>
+  <link rel="stylesheet" href="gameMenu.css">
+</head>
+<body>
+  <div id="top-menu">
+    <ul>
+      <li onclick="navigateTo('overview')">Genel Bakış</li>
+      <li onclick="navigateTo('map')">Harita</li>
+      <li onclick="navigateTo('reports')">Raporlar</li>
+      <li onclick="navigateTo('messages')">Mesajlar</li>
+      <li onclick="navigateTo('clan')">Klan</li>
+      <li onclick="navigateTo('profile')">Profil</li>
+      <li onclick="navigateTo('settings')">Ayarlar</li>
+    </ul>
+    <div id="profile-info">
+      <span>Puan: 5334</span>
+    </div>
+  </div>
+
+  <div id="side-menu">
+    <ul>
+      <li onclick="navigateTo('combine')">Kombine</li>
+      <li onclick="navigateTo('production')">Üretim</li>
+      <li onclick="navigateTo('transport')">Nakliyatlar</li>
+      <li onclick="navigateTo('units')">Birlikler</li>
+      <li onclick="navigateTo('commands')">Komutlar</li>
+      <li onclick="navigateTo('buildings')">Binalar</li>
+      <li onclick="navigateTo('research')">Araştırma</li>
+      <li onclick="navigateTo('groups')">Gruplar</li>
+      <li onclick="navigateTo('account')">Hesap Yöneticisi</li>
+    </ul>
+  </div>
+</body>
+<script src="gameMenu.js"></script>
+</html>

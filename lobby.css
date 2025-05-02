@@ -1,0 +1,78 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url('background-image.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
+
+.lobby-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.lobby-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.lobby-main {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+}
+
+.realms, .online-players, .chat {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  width: 30%;
+}
+
+h2 {
+  border-bottom: 2px solid #fff;
+  padding-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  padding: 5px;
+  border-bottom: 1px solid #555;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #ff5733;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c74422;
+}
+
+#chatBox {
+  height: 150px;
+  overflow-y: scroll;
+  background: rgba(50, 50, 50, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+#chatInput {
+  width: calc(100% - 100px);
+  padding: 10px;
+  margin-right: 10px;
+}

@@ -1,0 +1,35 @@
+<div id="chat-container">
+  <div id="chat-header">
+    <h3>Sohbet</h3>
+    <button onclick="toggleChat()">▼</button>
+  </div>
+  <div id="chat-content">
+    <!-- Kategoriler -->
+    <ul id="chat-tabs">
+      <li onclick="switchTab('recent')">Son Konuşmalar</li>
+      <li onclick="switchTab('group')">Grup Konuşmaları</li>
+      <li onclick="switchTab('friends')">Arkadaşlar</li>
+      <li onclick="switchTab('clan')">Klan</li>
+    </ul>
+    <!-- Sohbet Mesajları -->
+    <div id="chat-messages">
+      <div id="recent" class="chat-tab">
+        <p><strong>Paradoxxx:</strong> Merhaba!</p>
+      </div>
+      <div id="group" class="chat-tab" style="display: none;">
+        <p><strong>Klan Sohbeti:</strong> Saldırıya hazırız!</p>
+      </div>
+      <div id="friends" class="chat-tab" style="display: none;">
+        <p><strong>hesap267:</strong> Yeni bina yapıyorum.</p>
+      </div>
+      <div id="clan" class="chat-tab" style="display: none;">
+        <p><strong>ApexPredator:</strong> Klan toplantısı başlıyor.</p>
+      </div>
+    </div>
+  </div>
+  <!-- Mesaj Gönder Alanı -->
+  <div id="chat-input">
+    <input type="text" id="message" placeholder="Mesajınızı yazın...">
+    <button onclick="sendMessage()">Gönder</button>
+  </div>
+</div>

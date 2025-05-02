@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Test</title>
+</head>
+<body>
+  <h1>WebSocket Test</h1>
+  <input type="text" id="message" placeholder="Mesajınızı yazın">
+  <button onclick="sendMessage()">Gönder</button>
+  <div id="log"></div>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:8080');
+
+    socket.onopen = () => {
+      logMessage('Bağlantı kuruldu!');
+    };
+
+    socket.onmessage = (event) => {
+      logMessage(`Gelen mesaj: ${event.data}`);
+    };
+
+    socket.onclose = () => {
+      logMessage('Bağlantı kapandı.');
+    };
+
+    function sendMessage() {
+      const input = document.getElementById('message');
+      const message = input.value;
+      socket.send(message);
+      logMessage(`Gönderilen mesaj: ${message}`);
+      input.value = '';
+    }
+
+    function logMessage(message) {
+      const log = document.getElementById('log');
+      const newMessage = document.createElement('div');
+      newMessage.textContent = message;
+      log.appendChild(newMessage);
+    }
+  </script>
+</body>
+</html>
