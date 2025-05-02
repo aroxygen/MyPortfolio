@@ -1,21 +1,28 @@
-const WebSocket = require('ws');
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const mongoose = require('mongoose');
+const Message = require('./models/message'); // Mesaj modeli
 
-const wss = new WebSocket.Server({ port: 8080 });
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
-wss.on('connection', (ws) => {
-  console.log('New client connected');
-  
-  ws.on('message', (message) => {
-    console.log(`Received: ${message}`);
-    // Broadcast updates to all clients
-    wss.clients.forEach((client) => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
-    });
+// WebSocket bağlantısı
+io.on('connection', (socket) => {
+  console.log('Bir kullanıcı bağlandı.');
+
+  // Arama sorgusu için dinleme
+  socket.on('searchQuery', async (searchTerm) => {
+    const results = await Message.find({ $text: { $search: searchTerm } });
+    socket.emit('searchResults', results);
   });
 
-  ws.on('close', () => {
-    console.log('Client disconnected');
+  socket.on('disconnect', () => {
+    console.log('Bir kullanıcı bağlantıyı kesti.');
   });
+});
+
+server.listen(3000, () => {
+  console.log('Sunucu 3000 portunda çalışıyor.');
 });
