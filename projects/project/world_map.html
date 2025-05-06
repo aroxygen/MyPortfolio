@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crown Realms - World Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-u6ZHntM0tPqUy0eyJlfzlv+RyKFzZzZX1LGN9YxFqfM="
+    crossorigin=""
+  />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('images/background.png') center center / cover no-repeat;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 60px;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      text-align: center;
+      line-height: 60px;
+      font-size: 1.4rem;
+      font-weight: bold;
+      z-index: 1000;
+      border-bottom: 2px solid #c89b32;
+    }
+
+    .logo {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 300px;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    #map {
+      position: absolute;
+      top: 140px;
+      bottom: 0;
+      width: 100%;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🌍 Crown Realms World</header>
+  <img src="images/logo.png" alt="Game Logo" class="logo">
+
+  <div id="map"></div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-o9N1jv8R5lF6YNH2tqZ72FVhXxHFF0uD9LrYTwKzp+I="
+    crossorigin=""
+  ></script>
+  <script>
+    const map = L.map('map').setView([38.5, 27], 3);
+
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>'
+    }).addTo(map);
+
+    const character = L.marker([38.5, 27]).addTo(map)
+      .bindPopup('Your Nomad').openPopup();
+  </script>
+
+</body>
+</html>

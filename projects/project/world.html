@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zoomable World Map</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      color: white;
+      font-family: monospace;
+    }
+    #container {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+    }
+    #map {
+      position: absolute;
+      transform-origin: 0 0;
+      image-rendering: auto;
+    }
+    .marker {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: red;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    #coords {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: black;
+    }
+    .popup {
+      position: fixed;
+      background: #222;
+      color: #fff;
+      padding: 10px;
+      border: 1px solid #555;
+      display: none;
+    }
+    canvas.grid {
+      position: absolute;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+  <img id="map" src="images/imagesworld_map_5800x3676.png" />
+  <canvas class="grid"></canvas>
+</div>
+<pre id="coords">Koordinatlar: -</pre>
+<div id="popup" class="popup"></div>
+
+<script>
+  const container = document.getElementById("container");
+  const map = document.getElementById("map");
+  const coordsText = document.getElementById("coords");
+  const popup = document.getElementById("popup");
+  const gridCanvas = document.querySelector(".grid");
+  const gridCtx = gridCanvas.getContext("2d");
+
+  let scale = 1;
+  let originX = 0;
+  let originY = 0;
+  let isDragging = false;
+  let lastX = 0;
+  let lastY = 0;
+  const markers = [];
+
+  const imageW = 5800;
+  const imageH = 3676;
+  gridCanvas.width = imageW;
+  gridCanvas.height = imageH;
+  drawGrid();
+
+  function drawGrid() {
+    gridCtx.clearRect(0, 0, imageW, imageH);
+    gridCtx.strokeStyle = "rgba(255,255,255,0.1)";
+    const cols = 100;
+    const rows = 64;
+    const cellWidth = imageW / cols;
+    const cellHeight = imageH / rows;
+
+    for (let i = 0; i <= cols; i++) {
+      gridCtx.beginPath();
+      gridCtx.moveTo(cellWidth * i, 0);
+      gridCtx.lineTo(cellWidth * i, imageH);
+      gridCtx.stroke();
+    }
+
+    for (let j = 0; j <= rows; j++) {
+      gridCtx.beginPath();
+      gridCtx.moveTo(0, cellHeight * j);
+      gridCtx.lineTo(imageW, cellHeight * j);
+      gridCtx.stroke();
+    }
+  }
+
+  function updateTransform() {
+    const transform = `translate(${originX}px, ${originY}px) scale(${scale})`;
+    map.style.transform = transform;
+    gridCanvas.style.transform = transform;
+    markers.forEach(dot => {
+      dot.style.transform = `translate(${originX}px, ${originY}px) scale(${scale}) translate(-50%, -50%)`;
+    });
+  }
+
+  container.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    container.style.cursor = "grabbing";
+  });
+
+  window.addEventListener("mouseup", () => {
+    isDragging = false;
+    container.style.cursor = "grab";
+  });
+
+  container.addEventListener("mouseleave", () => {
+    isDragging = false;
+    container.style.cursor = "grab";
+  });
+
+  container.addEventListener("mousemove", (e) => {
+    if (isDragging) {
+      originX += e.clientX - lastX;
+      originY += e.clientY - lastY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      updateTransform();
+    }
+  });
+
+  container.addEventListener("wheel", (e) => {
+    e.preventDefault();
+
+    const rect = container.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left - originX) / scale;
+    const mouseY = (e.clientY - rect.top - originY) / scale;
+
+    const factor = e.deltaY > 0 ? 0.9 : 1.1;
+    const newScale = scale * factor;
+
+    originX -= (mouseX * newScale - mouseX * scale);
+    originY -= (mouseY * newScale - mouseY * scale);
+    scale = newScale;
+
+    updateTransform();
+  });
+
+  container.addEventListener("click", (e) => {
+    const rect = container.getBoundingClientRect();
+    const x = (e.clientX - rect.left - originX) / scale;
+    const y = (e.clientY - rect.top - originY) / scale;
+    const fx = (x / imageW).toFixed(4);
+    const fy = (y / imageH).toFixed(4);
+
+    coordsText.textContent = `Koordinatlar: ${fx} x ${fy}`;
+
+    const cols = 100;
+    const rows = 64;
+    const cellWidth = imageW / cols;
+    const cellHeight = imageH / rows;
+    const id = `arsa_${Math.floor(x / cellWidth)}_${Math.floor(y / cellHeight)}`;
+
+    popup.style.left = `${e.clientX + 10}px`;
+    popup.style.top = `${e.clientY + 10}px`;
+    popup.innerHTML = `<strong>${id}</strong><br><button onclick=\"alert('Satın alındı: ${id}')\">Satın Al</button>`;
+    popup.style.display = "block";
+
+    const dot = document.createElement("div");
+    dot.className = "marker";
+    dot.style.left = `${x}px`;
+    dot.style.top = `${y}px`;
+    dot.style.transform = `translate(${originX}px, ${originY}px) scale(${scale}) translate(-50%, -50%)`;
+    container.appendChild(dot);
+    markers.push(dot);
+  });
+</script>
+</body>
+</html>

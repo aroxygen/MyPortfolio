@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up</title>
+</head>
+<body>
+  <h2>Create Account</h2>
+  <label>Username: <input type="text" id="newUsername"></label><br><br>
+  <label>Password: <input type="password" id="newPassword"></label><br><br>
+  <button onclick="signup()">Sign Up</button>
+
+  <script>
+    function signup() {
+      const newUser = document.getElementById("newUsername").value;
+      const newPass = document.getElementById("newPassword").value;
+
+      if (!newUser || !newPass) {
+        alert("Please enter both username and password.");
+        return;
+      }
+
+      // Store account in localStorage
+      localStorage.setItem("username", newUser);
+      localStorage.setItem("password", newPass);
+      alert("Account created! You can now log in.");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  
+  /* 1. katman: header.png
+     2. katman: tüm sayfa arka planı */
+  background:
+    url('images/header.png')    top   center  no-repeat,
+    url('images/background.png') center center / cover no-repeat;
+}
+
+.login-card h2 {
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.login-card label {
+  display: block;
+  margin-bottom: .25rem;
+  font-size: .9rem;
+  color: #333;
+}
+
+.login-card input {
+  width: 100%;
+  padding: .5rem;
+  margin-bottom: .75rem;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.login-card .remember {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: .85rem;
+}
+
+.login-card button {
+  width: 100%;
+  padding: .6rem;
+  background: #c89b32;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.login-card .forgot {
+  margin-top: .5rem;
+  text-align: right;
+}
+.login-card .forgot a {
+  color: #555;
+  text-decoration: none;
+}
+.login-card .forgot a:hover {
+  text-decoration: underline;
+
+}
+.connect .wallet-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+/* ───────────────────────────────────────────────────────
+   Tek Parşömen Paneli (logo altında, ortada)
+─────────────────────────────────────────────────────── */
+.parchment-panel {
+  position: absolute;
+  /* logo’nun altına inmek için top değerini ayarlayın */
+  top: calc(25% + 120px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 300px;
+  height: 250px;
+
+  background: url('images/parchment.png') no-repeat center center;
+  /* resmi kutunun boyutuna göre ölçekle */
+  background-size: cover;
+
+  z-index: 2;
+}
